@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-interface Supplier{
+interface Supplier {
   name: string;
   address: string;
   phone: string;
@@ -12,7 +12,7 @@ interface Supplier{
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'angular-data-table';
 
   public suppliers: Array<Supplier> = [
@@ -106,11 +106,35 @@ export class AppComponent {
       phone: '90000000',
       email: 'test15@gmail.com',
     },
-    {
-      name: 'Supplier 16',
-      address: 'Address 16',
-      phone: '90000000',
-      email: 'test16@gmail.com',
-    },
   ];
+
+  currentPage: number = 1;
+  pageSize: number = 5;
+
+  ngOnInit(): void {
+    this.visibleData();
+    this.pageNumbers();
+  }
+
+  visibleData() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.suppliers.slice(startIndex, endIndex);
+  }
+
+  previousPage(): void {
+    this.currentPage = this.currentPage - 1;
+    this.visibleData();
+  }
+
+  nextPage(): void {
+    this.currentPage = this.currentPage + 1;
+    this.visibleData();
+  }
+
+  pageNumbers() {
+    const totalPages = this.suppliers.length / this.pageSize;
+    const pageArray = new Array(totalPages);
+    return pageArray;
+  }
 }
